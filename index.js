@@ -1,4 +1,4 @@
-import { Client, GatewayIntentBits, Collection } from 'discord.js';
+import { Client, GatewayIntentBits, Collection, REST, Routes } from 'discord.js';
 import dotenv from 'dotenv';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -12,7 +12,7 @@ const prefixRef = { value: '!' }; // Use an object so it can be updated by refer
 client.commands = new Collection();
 
 // Dynamically import all command files
-const commandsPath = path.join(process.cwd(), 'dc-bot', 'commands');
+const commandsPath = path.join(process.cwd(), 'commands');
 const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
 
 for (const file of commandFiles) {
@@ -27,6 +27,7 @@ client.once('ready', () => {
   console.log(`Logged in as ${client.user.tag}`);
 });
 
+// Handle prefix commands
 client.on('messageCreate', message => {
   if (message.author.bot) return;
   if (!message.content.startsWith(prefixRef.value)) return;
