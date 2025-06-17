@@ -5,7 +5,14 @@ import path from 'node:path';
 
 dotenv.config();
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
+const client = new Client({
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.MessageContent,
+    GatewayIntentBits.GuildMembers // <-- Add this!
+  ]
+});
 
 const prefixRef = { value: '!' }; // Use an object so it can be updated by reference
 
