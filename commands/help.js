@@ -1,27 +1,53 @@
-import { EmbedBuilder } from 'discord.js';
+import { setPrefixRef } from 'path_to_setPrefixRef';
 
-let prefixRef = { value: '!' };
-
-export function setPrefixRef(ref) {
-  prefixRef = ref;
-}
+setPrefixRef({ value: '!' });
 
 export default {
   name: 'help',
   async execute(message, args) {
-    // Get all command names from the client
-    const commandNames = Array.from(message.client.commands.keys());
-
+    const { EmbedBuilder } = await import('discord.js');
     const embed = new EmbedBuilder()
-      .setTitle('Bot Help')
-      .setDescription(`**Current Prefix:** \`${prefixRef.value}\``)
-      .addFields([
+      .setTitle('Bot Commands Help')
+      .setColor(0x5865F2)
+      .addFields(
         {
-          name: 'Commands',
-          value: commandNames.map(cmd => `\`${cmd}\``).join(' '),
+          name: '!dmall <cooldown_minutes> <message>',
+          value: [
+            'Sends a DM to every member in the server (admin only).',
+            'Skips users who have already been DMed.',
+            'Cooldown is the wait time (in minutes) between each DM.',
+            'Progress is tracked and logged in a file.',
+            'Example: `!dmall 1 Hello, this is a test message!`'
+          ].join('\n')
+        },
+        {
+          name: '!help',
+          value: [
+            'Shows this help message.',
+            'Example: `!help`'
+          ].join('\n')
         }
-      ])
-      .setColor(0x5865F2);
+      )
+      .setFooter({ text: 'Use commands as shown above. <> = required, [] = optional.' });
+
+    await message.reply({ embeds: [embed] });
+  }
+};
+          name: '!reload',
+          value: [
+            'Reloads all bot commands without restarting the bot (admin only).',
+            'Example: `!reload`'
+          ].join('\n')
+        },
+        {
+          name: '!help',
+          value: [
+            'Shows this help message.',
+            'Example: `!help`'
+          ].join('\n')
+        }
+      )
+      .setFooter({ text: 'Use commands as shown above. <> = required, [] = optional.' });
 
     await message.reply({ embeds: [embed] });
   }
